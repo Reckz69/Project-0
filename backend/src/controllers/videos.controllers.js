@@ -6,86 +6,94 @@ import { User } from "../models/user.models.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { deleteImageFromCloudinary, uploadToCloudinary } from "../utils/cloudinary.js";
 
-const getAllVideos = asyncHandler(async(req, res) => {
-    const {page = 1, limit= 10, query, sortBy, sortType, userId} = req.query;
-
-    const match = {
-        isPublished: true
+const getAllVideos = asyncHandler(async (req, res) => {
+    const {
+      page = 1,
+      limit = 10,
+      query,
+      sortBy,
+      sortType,
+      userId
+    } = req.query;
+  
+    const match = {};
+    const sort = {};
+    const options = {
+      page: Number(page),
+      limit: Number(limit),
     };
-    const sort = {}
-    const options = {page: Number(page), limit: Number(limit)}
-
-    if(query?.trim()) match.title = {$regex: query.trim(), $options: "i"};
-    if(userId){
-        if(!isValidObjectId(userId)){
-            throw new ApiError(400, "Invalid User Id")
-        }
-        const user = await User.findById(userId)
-
-        if(!user){
-            throw new ApiError(404, "user not found")
-        }
-
-        match["owner._id"] = new mongoose.Types.ObjectId(userId)
+  
+    // 🔍 Search
+    if (query?.trim()) {
+      match.title = { $regex: query.trim(), $options: "i" };
     }
-    if(sortBy && typeof sortBy == "string"){
-        const sortOrder = sortType?.toLowerCase() == "asc"? 1 : -1;
-        sort[sortBy] = sortOrder;
+  
+    // 👤 My videos
+    if (userId === "me") {
+      match.owner = req.user._id;
     }
-
+  
+    // 👤 Other user's videos
+    else if (userId) {
+      if (!isValidObjectId(userId)) {
+        throw new ApiError(400, "Invalid User Id");
+      }
+  
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new ApiError(404, "User not found");
+      }
+  
+      match.owner = new mongoose.Types.ObjectId(userId);
+      match.isPublished = true; // public only
+    }
+  
+    // 🌍 Public videos
+    else {
+      match.isPublished = true;
+    }
+  
+    // 🔃 Sorting
+    if (sortBy) {
+      sort[sortBy] = sortType?.toLowerCase() === "asc" ? 1 : -1;
+    }
+  
     const pipeline = [
-        {
-            $lookup:{
-                from: "users",
-                localField: "owner",
-                foreignField: "_id",
-                as: "owner",
-            }
+      { $match: match },
+  
+      {
+        $lookup: {
+          from: "users",
+          localField: "owner",
+          foreignField: "_id",
+          as: "owner",
         },
-        {
-            $addFields:
-            {
-                owner:
-                {
-                    $first: "$owner",
-                },
-            },
+      },
+      { $addFields: { owner: { $first: "$owner" } } },
+      {
+        $project: {
+          "owner.password": 0,
+          "owner.refreshToken": 0,
         },
-        {
-            $project:
-            {
-                "owner.refreshToken":0, 
-                "owner.password": 0
-            }
-        }
+      },
     ];
-
-    if(userId){
-        pipeline.push({
-            $match: match,
-        })
-    }else{
-        pipeline.unshift({
-            $match: match   
-        })
+  
+    if (Object.keys(sort).length) {
+      pipeline.push({ $sort: sort });
     }
-
-    if(Object.keys(sort).length > 0 ){
-        pipeline.push({
-            $sort: sort
-        })
-    }
-
-    const videoAggregation = Video.aggregate(pipeline)
+  
+    const videoAggregation = Video.aggregate(pipeline);
+  
     const paginatedVideos = await Video.aggregatePaginate(
-        videoAggregation,
-        options
+      videoAggregation,
+      options
     );
-
+  
     return res
-    .status(200)
-    .json(new ApiResponse(200, paginatedVideos, "v fetched successfully"))
-})
+      .status(200)
+      .json(new ApiResponse(200, paginatedVideos, "Videos fetched successfully"));
+  });
+  
 
 const publishVideo = asyncHandler(async(req, res) => {
     const {title, description} = req.body;
@@ -302,35 +310,42 @@ const deleteVideo = asyncHandler(async(req, res) => {
         .json(new ApiResponse(200,{}, "Video file Deleted successfully"));
 });
 
-const getVideoViews = asyncHandler(async(req, res) => {
-    const {videoId} = req.params;
-
-    if(!videoId?.trim()){
-        throw new ApiError(400, "videoId is required")
+const getVideoViews = asyncHandler(async (req, res) => {
+    const { videoId } = req.params;
+    const userId = req.user?._id;
+  
+    if (!videoId || !isValidObjectId(videoId)) {
+      throw new ApiError(400, "Invalid videoId");
     }
-
-    if(!isValidObjectId(videoId)){
-        throw new ApiError(400, "Invalid videoId")
+  
+    if (!userId) {
+      throw new ApiError(401, "Unauthorized");
     }
-
-    const video = await Video.findByIdAndUpdate(
-        videoId,
-        {
-            $inc: {views: 1},
-        },
-        {
-            new: true,
-        }
-    )
-
-    if(!video){
-        throw new ApiError(404, " video Not Found");
+  
+    const video = await Video.findById(videoId);
+  
+    if (!video) {
+      throw new ApiError(404, "Video not found");
     }
-
-    return res 
-        .status(200)
-        .json(new ApiResponse(200, {views: video.views}, "Video view count updated"))
-})
+  
+    // ✅ Check if user already viewed
+    const alreadyViewed = video.viewedBy.includes(userId);
+  
+    if (!alreadyViewed) {
+      video.views += 1;
+      video.viewedBy.push(userId);
+      await video.save();
+    }
+  
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        { views: video.views, alreadyViewed },
+        "View count processed"
+      )
+    );
+  });
+  
 
 const togglePublishedStatus = asyncHandler(async(req, res) => {
     const {videoId} = req.params;

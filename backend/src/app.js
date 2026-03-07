@@ -12,7 +12,7 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(express.json({ limit: '50kb' })); //middleware to parse json data in request body and limit size to prevent large payloads
+app.use(express.json({ limit: '' })); //middleware to parse json data in request body and limit size to prevent large payloads
 app.use(express.urlencoded({ extended: true, limit: '50kb' })); //middleware to parse urlencoded data and limit size
 app.use(cookieParser());//third party operations on the cookies
 app.use(express.static('public'));//middleware to serve static files from 'public' directory
@@ -31,6 +31,7 @@ app.use('/api/v1/videos', videoRoutes);
 app.use('/api/v1/subscriptions', subscriptionRoutes);
 app.use('/api/v1/playlists', playlistRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
+
 
 export { userRoutes, videoRoutes, subscriptionRoutes, playlistRoutes, dashboardRoutes };
 

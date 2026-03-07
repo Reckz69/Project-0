@@ -133,6 +133,12 @@ const RecentVideoCard = ({ video, navigate }) => {
       </div>
       <div className="p-4">
         <h4 className="font-bold text-sm truncate group-hover:text-indigo-400 transition-colors">{video.title}</h4>
+        <span
+            onClick={() => handleOwnerClick(video.owner)}
+            className="text-slate-500 text-xs cursor-pointer hover:text-white transition"
+          >
+            {video.owner?.username}
+          </span>
         <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-wider">
           {new Date(video.createdAt).toLocaleDateString()}
         </p>

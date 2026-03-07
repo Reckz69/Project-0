@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../api/auth.js";
 import { 
   UserPlus, Mail, Lock, User, 
-  Loader2, ArrowRight, Camera, 
-  Sparkles, ShieldCheck, Fingerprint, Atom
+  Loader2, ChevronRight, Camera, 
+  ShieldCheck, Fingerprint
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -32,126 +32,146 @@ const Register = () => {
 
     try {
       await registerUser(data);
-      toast.success("Station Registered. Welcome to the Network.");
+      toast.success("Account created successfully. Welcome!");
       navigate("/login");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Registration sequence failed.");
+      toast.error(err.response?.data?.message || "Registration failed.");
     } finally { setIsSubmitting(false); }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center px-4 py-16 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#030303] text-slate-200 flex items-center justify-center px-4 py-20 relative overflow-hidden font-sans selection:bg-indigo-500/30">
       
-      {/* --- CINEMATIC BACKGROUND --- */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* --- FLUX BACKGROUND AMBIANCE --- */}
+      <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-5%] left-[-5%] w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="w-full max-w-[560px] z-10 relative">
+      <div className="w-full max-w-[520px] z-10 relative">
         
-        {/* --- HEADER HUD --- */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-indigo-400 text-[10px] font-black tracking-[0.4em] uppercase mb-6">
-            <Atom size={14} className="animate-spin-slow" /> Initialize Creator Protocol
-          </div>
-          <h1 className="text-5xl md:text-6xl font-black italic tracking-tighter uppercase leading-none mb-4">
-            Register <span className="text-indigo-500">Station</span>
-          </h1>
-          <p className="text-slate-500 font-bold text-xs uppercase tracking-widest">Connect your identity to the ProjectX Grid.</p>
+        {/* --- BRAND HEADER: FLUX PRISM LOGO --- */}
+        <div className="flex flex-col items-center mb-10">
+          <Link to="/" className="relative mb-8 group">
+            <div className="absolute inset-0 bg-indigo-500/20 rounded-2xl blur-lg opacity-40 group-hover:opacity-100 transition-opacity animate-pulse" />
+            <div className="relative w-14 h-14 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl transition-transform group-hover:scale-105">
+              <Fingerprint className="text-white w-8 h-8" strokeWidth={1.5} />
+            </div>
+          </Link>
+          <h1 className="text-3xl font-semibold tracking-tight text-white mb-2">Create your account</h1>
+          <p className="text-slate-500 text-sm font-light">Join the community and start sharing your videos.</p>
         </div>
 
-        {/* --- MAIN INTERFACE CARD --- */}
-        <div className="relative group/card">
-          <div className="absolute -inset-[1px] bg-gradient-to-b from-white/20 to-transparent rounded-[3.5rem] opacity-30 group-hover/card:opacity-60 transition-opacity" />
-          
-          <div className="relative bg-[#0A0A0A]/90 backdrop-blur-3xl rounded-[3.5rem] p-10 md:p-14 border border-white/5 shadow-2xl overflow-hidden">
+        {/* --- REGISTER CARD --- */}
+        <div className="relative">
+          <div className="bg-[#111111] border border-white/5 rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative">
+            {/* Top accent line */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
             
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
               
-              {/* --- AVATAR UPLINK --- */}
-              <div className="flex flex-col items-center group/avataar">
-                <div className="relative">
-                  <div className="absolute -inset-2 bg-indigo-500/20 rounded-full blur-xl opacity-0 group-hover/avataar:opacity-100 transition-opacity" />
-                  <div className="relative w-28 h-28 rounded-3xl bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden transition-all group-hover/avataar:border-indigo-500/50 rotate-3 group-hover/avataar:rotate-0">
+              {/* --- AVATAR UPLOAD --- */}
+              <div className="flex flex-col items-center mb-8">
+                <div className="relative group cursor-pointer">
+                  <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden transition-all group-hover:border-indigo-500/50">
                     {preview ? (
-                      <img src={preview} alt="Preview" className="w-full h-full object-cover scale-110" />
+                      <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <User size={40} className="text-slate-700" />
+                      <User size={32} className="text-slate-600" />
                     )}
-                    <label className="absolute inset-0 bg-indigo-600/80 flex items-center justify-center opacity-0 group-hover/avataar:opacity-100 cursor-pointer transition-all">
-                      <Camera size={24} className="text-white" />
+                    <label className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+                      <Camera size={20} className="text-white" />
                       <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                     </label>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 bg-white p-2 rounded-xl text-black shadow-xl">
-                    <UserPlus size={16} />
+                  <div className="absolute bottom-0 right-0 bg-indigo-600 p-1.5 rounded-full text-white shadow-lg border-2 border-[#111111]">
+                    <UserPlus size={14} />
                   </div>
                 </div>
-                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 mt-6">Visual Identifier</p>
+                <span className="text-[11px] font-medium text-slate-500 mt-3 uppercase tracking-wider">Profile Photo</span>
               </div>
 
-              {/* --- DATA INPUTS --- */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <HUDInput label="Legal Alias" placeholder="JOHN DOE" icon={<User size={16}/>} onChange={(val) => setFormData({...formData, fullName: val})} />
-                <HUDInput label="Network Tag" placeholder="CREATOR_01" icon={<Fingerprint size={16}/>} onChange={(val) => setFormData({...formData, username: val})} />
+              {/* --- INPUT FIELDS --- */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <CleanInput 
+                  label="Full Name" 
+                  placeholder="John Doe" 
+                  icon={<User size={18}/>} 
+                  onChange={(val) => setFormData({...formData, fullName: val})} 
+                />
+                <CleanInput 
+                  label="Username" 
+                  placeholder="johndoe" 
+                  icon={<Fingerprint size={18}/>} 
+                  onChange={(val) => setFormData({...formData, username: val})} 
+                />
               </div>
 
-              <HUDInput label="Uplink Email" placeholder="CORE@NETWORK.COM" icon={<Mail size={16}/>} type="email" onChange={(val) => setFormData({...formData, email: val})} />
-              <HUDInput label="Access Key" placeholder="••••••••" icon={<Lock size={16}/>} type="password" onChange={(val) => setFormData({...formData, password: val})} />
+              <CleanInput 
+                label="Email Address" 
+                placeholder="name@example.com" 
+                icon={<Mail size={18}/>} 
+                type="email" 
+                onChange={(val) => setFormData({...formData, email: val})} 
+              />
+              <CleanInput 
+                label="Password" 
+                placeholder="••••••••" 
+                icon={<Lock size={18}/>} 
+                type="password" 
+                onChange={(val) => setFormData({...formData, password: val})} 
+              />
 
-              {/* --- ACTION BUTTON --- */}
+              {/* --- SUBMIT BUTTON --- */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="relative w-full group/btn overflow-hidden"
+                className="w-full relative group mt-4"
               >
-                <div className="absolute inset-0 bg-indigo-600 translate-y-[100%] group-hover/btn:translate-y-0 transition-transform duration-500" />
-                <div className="relative w-full py-5 bg-white text-black group-hover/btn:text-white font-black uppercase text-xs tracking-[0.5em] rounded-2xl transition-all duration-500 flex items-center justify-center gap-3">
-                  {isSubmitting ? <Loader2 className="animate-spin" size={20} /> : (
+                <div className="absolute inset-0 bg-indigo-600 rounded-2xl blur-md opacity-20 group-hover:opacity-40 transition-opacity" />
+                <div className="relative w-full py-4 bg-white text-black hover:bg-slate-200 disabled:opacity-50 font-semibold rounded-2xl transition-all flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <Loader2 className="animate-spin" size={20} />
+                  ) : (
                     <>
-                      Initialize Origin
-                      <ArrowRight size={18} className="group-hover/btn:translate-x-3 transition-transform" />
+                      <span>Get Started</span>
+                      <ChevronRight size={20} />
                     </>
                   )}
                 </div>
               </button>
             </form>
 
-            {/* --- CROSS-LINK --- */}
-            <div className="mt-12 pt-8 border-t border-white/5 text-center">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
-                Already Registered? <Link to="/login" className="text-white hover:text-indigo-400 underline decoration-indigo-500 underline-offset-4">Relink Station</Link>
+            {/* --- FOOTER --- */}
+            <div className="mt-10 pt-6 border-t border-white/5 text-center">
+              <p className="text-sm text-slate-500 font-light">
+                Already have an account? <Link to="/login" className="text-white font-medium hover:text-indigo-400 transition-colors">Sign in</Link>
               </p>
             </div>
           </div>
         </div>
 
         {/* --- SECURITY FOOTER --- */}
-        <div className="mt-12 flex justify-center opacity-30">
-           <div className="flex items-center gap-3 px-5 py-2.5 border border-white/10 rounded-full bg-white/5">
-              <ShieldCheck size={14} className="text-cyan-400" />
-              <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400">Secure MERN Pipeline Active</span>
-           </div>
+        <div className="mt-8 flex justify-center items-center gap-2 opacity-40">
+           <ShieldCheck size={14} className="text-slate-400" />
+           <span className="text-xs font-medium text-slate-400 tracking-tight">Secure, encrypted connection active</span>
         </div>
       </div>
     </div>
   );
 };
 
-/* --- ARTISTIC INPUT HELPER --- */
-const HUDInput = ({ label, placeholder, icon, type = "text", onChange }) => (
-  <div className="space-y-2.5">
-    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 ml-1">{label}</label>
-    <div className="relative group/in">
-      <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within/in:text-indigo-400 transition-colors">
+/* --- REFINED INPUT COMPONENT --- */
+const CleanInput = ({ label, placeholder, icon, type = "text", onChange }) => (
+  <div className="space-y-2">
+    <label className="text-xs font-medium text-slate-400 ml-1">{label}</label>
+    <div className="relative group">
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors">
         {icon}
       </div>
       <input
         type={type}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full pl-14 pr-6 py-4.5 bg-white/[0.03] border border-white/5 rounded-2xl focus:outline-none focus:border-indigo-500/50 text-[11px] font-bold uppercase tracking-widest text-white placeholder:text-slate-800 transition-all"
+        className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-indigo-500/30 focus:ring-1 focus:ring-indigo-500/20 text-slate-200 placeholder:text-slate-700 transition-all text-sm"
         required
       />
     </div>

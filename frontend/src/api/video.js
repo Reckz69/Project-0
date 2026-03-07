@@ -28,7 +28,7 @@ export const uploadVideo = (formData, onProgress) =>
   
     return res.data.data.docs; // aggregatePaginate result
   };
-  
+
 
 export const deleteVideo = (videoId) =>
   API.delete(`/videos/${videoId}`);
@@ -38,3 +38,6 @@ export const togglePublish = (videoId) =>
 
 export const getVideoViews = (videoId) =>
   API.patch(`/videos/views/${videoId}`);
+
+export const searchVideos = (query) =>
+  API.get(`/videos/search?query=${query}`);

@@ -26,18 +26,30 @@ const VideoSchema = new Schema({
         type: Number,
         required: true,
     },
-    views:{
-        type: Number,
-        default: 0,
-    },
+
     isPublished:{
         type: Boolean,
         default: true,
-    }
+    },
+    views: {
+        type: Number,
+        default: 0,
+      },
+    viewedBy: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
 },
 {
     timestamps: true,
 })
+// Add this before: const Video = mongoose.model("Video", VideoSchema);
+VideoSchema.index({ 
+    title: "text", 
+    description: "text" 
+});
 
 VideoSchema.plugin(mongooseAggregatePaginate);
 

@@ -1,128 +1,117 @@
 import { 
-  Cpu, Layers, ShieldCheck, BarChart3, Zap, ArrowRight, 
-  Server, Monitor, Sparkles, Box, Radio, Trello
+  Monitor, Server, ShieldCheck, Zap, ArrowRight, 
+  Sparkles, Layers, Code2, Cpu
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-indigo-500 pb-32 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#030303] text-slate-200 selection:bg-indigo-500/30 pb-32 relative overflow-hidden font-sans">
       
-      {/* --- GOD-LEVEL AMBIENT BACKGROUND --- */}
-      {/* Cinematic Noise Texture Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      
-      {/* Floating Interactive Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15)_0%,_transparent_60%)] blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.1)_0%,_transparent_60%)] blur-[120px]" />
-      
-      {/* Grid Floor Effect */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* --- FLUX BACKGROUND AMBIANCE --- */}
+      <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle_at_center,_rgba(79,70,229,0.08)_0%,_transparent_60%)] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(168,85,247,0.05)_0%,_transparent_60%)] blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 pt-32 relative z-10">
         
-        {/* --- KINETIC HERO SECTION --- */}
-        <div className="mb-40 text-center md:text-left">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-indigo-400 text-[10px] font-black tracking-[0.5em] uppercase mb-10 animate-bounce-slow">
-            <Sparkles size={14} className="text-cyan-400" /> System Genesis v2.0
+        {/* --- HERO SECTION: CLEAN & EDITORIAL --- */}
+        <div className="mb-32 text-center md:text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-indigo-400 text-[11px] font-bold uppercase tracking-wider mb-8">
+            <Sparkles size={14} /> Engineering the Future
           </div>
           
-          <h1 className="text-7xl md:text-[11rem] font-black italic tracking-tighter uppercase leading-[0.75] mb-12">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/20">Infinite</span> <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400">ProjectX.</span>
+          <h1 className="text-6xl md:text-8xl font-light tracking-tight text-white mb-8 leading-[1.1]">
+            High-performance <br />
+            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-300 to-slate-500">
+                Streaming Architecture.
+            </span>
           </h1>
 
-          <div className="flex flex-col md:flex-row gap-12 items-end justify-between">
-            <p className="text-slate-400 max-w-xl text-xl md:text-2xl font-light leading-relaxed tracking-tight">
-              A high-precision video engine forged in the MERN stack, designed to bridge the gap between <span className="text-white font-bold">creative vision</span> and <span className="text-white font-bold">global scale.</span>
-            </p>
-            <div className="hidden md:block h-px w-32 bg-gradient-to-r from-indigo-500 to-transparent mb-4" />
-          </div>
+          <p className="text-slate-400 max-w-2xl text-lg md:text-xl font-light leading-relaxed">
+            ProjectX is a precision-engineered video platform designed to deliver seamless 4K content. Built with the MERN stack and optimized for the modern web.
+          </p>
         </div>
 
-        {/* --- BENTO ARCHITECTURE GRID --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-48">
+        {/* --- TECHNOLOGY BENTO GRID --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-40">
           
-          {/* Main Engine: Frontend */}
-          <div className="lg:col-span-2 group relative h-[500px] rounded-[4rem] overflow-hidden bg-gradient-to-b from-white/10 to-transparent p-[1px] hover:scale-[1.01] transition-all duration-700">
-            <div className="absolute inset-0 bg-[#0A0A0A] rounded-[4rem]" />
-            <div className="relative h-full p-12 flex flex-col justify-between overflow-hidden">
-               {/* Decorative Element */}
-               <div className="absolute -right-20 -top-20 w-80 h-80 bg-indigo-500/20 rounded-full blur-[80px] group-hover:bg-indigo-500/40 transition-colors duration-1000" />
-               
-               <div className="z-10">
-                 <Monitor size={48} className="text-indigo-500 mb-8 group-hover:rotate-12 transition-transform duration-500" />
-                 <h3 className="text-4xl font-black uppercase italic tracking-tighter mb-4">Neural Interface</h3>
-                 <p className="text-slate-500 font-medium">Built with React 18 & Framer Motion for liquid-smooth interactions.</p>
-               </div>
-
-               <div className="z-10 grid grid-cols-2 gap-4">
-                  <TechLabel label="Virtual DOM" />
-                  <TechLabel label="Tailwind Core" />
-                  <TechLabel label="Context Rehydration" />
-                  <TechLabel label="GPU Acceleration" />
-               </div>
-            </div>
-          </div>
-
-          {/* Core Heart: Backend */}
-          <div className="lg:col-span-2 group relative h-[500px] rounded-[4rem] overflow-hidden bg-gradient-to-b from-white/10 to-transparent p-[1px] hover:scale-[1.01] transition-all duration-700">
-            <div className="absolute inset-0 bg-[#0A0A0A] rounded-[4rem]" />
-            <div className="relative h-full p-12 flex flex-col justify-between">
-               <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-[80px] group-hover:bg-cyan-500/30 transition-colors duration-1000" />
-               
+          {/* Frontend Card */}
+          <div className="lg:col-span-7 group relative rounded-[2.5rem] overflow-hidden bg-white/[0.02] border border-white/5 p-10 md:p-14 hover:border-indigo-500/30 transition-all duration-500">
+             <div className="relative z-10 h-full flex flex-col justify-between">
                <div>
-                 <Server size={48} className="text-cyan-400 mb-8" />
-                 <h3 className="text-4xl font-black uppercase italic tracking-tighter mb-4">Core Singularity</h3>
-                 <p className="text-slate-500 font-medium">Node.js event-loop architecture handling millions of concurrent transmissions.</p>
+                 <div className="w-12 h-12 rounded-xl bg-indigo-600/20 flex items-center justify-center text-indigo-400 mb-8">
+                    <Monitor size={24} />
+                 </div>
+                 <h3 className="text-3xl font-semibold text-white mb-4">Fluid User Interface</h3>
+                 <p className="text-slate-500 text-lg font-light leading-relaxed mb-8">
+                    Crafted with React and Framer Motion for liquid-smooth navigation and high-fidelity video previews.
+                 </p>
                </div>
 
-               <div className="grid grid-cols-2 gap-4">
-                  <TechLabel label="Express.js" />
-                  <TechLabel label="JWT Encryption" />
-                  <TechLabel label="Cloudinary SDK" />
-                  <TechLabel label="MongoDB Atlas" />
+               <div className="flex flex-wrap gap-3">
+                  <TechBadge label="React 18" />
+                  <TechBadge label="Tailwind CSS" />
+                  <TechBadge label="Framer Motion" />
+                  <TechBadge label="Responsive Engine" />
+               </div>
+             </div>
+          </div>
+
+          {/* Backend Card */}
+          <div className="lg:col-span-5 group relative rounded-[2.5rem] overflow-hidden bg-white/[0.02] border border-white/5 p-10 md:p-14 hover:border-purple-500/30 transition-all duration-500">
+             <div className="relative z-10 h-full flex flex-col justify-between">
+               <div>
+                 <div className="w-12 h-12 rounded-xl bg-purple-600/20 flex items-center justify-center text-purple-400 mb-8">
+                    <Server size={24} />
+                 </div>
+                 <h3 className="text-3xl font-semibold text-white mb-4">The Core</h3>
+                 <p className="text-slate-500 text-lg font-light leading-relaxed mb-8">
+                    A robust Node.js environment managing secure authentication and complex data pipelines.
+                 </p>
+               </div>
+
+               <div className="flex flex-wrap gap-3">
+                  <TechBadge label="Node.js" />
+                  <TechBadge label="Express" />
+                  <TechBadge label="JWT" />
+                  <TechBadge label="MongoDB" />
                </div>
             </div>
           </div>
         </div>
 
-        {/* --- PERFORMANCE HUD SECTION --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-48">
-          <FeatureHUD 
-            icon={<ShieldCheck size={32} />} 
-            title="Ironclad Security" 
-            desc="Stateless Auth via HTTP-only Cookies & JWT."
-            color="indigo"
+        {/* --- FEATURE HIGHLIGHTS --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mb-40 px-4">
+          <FeatureItem 
+            icon={<ShieldCheck size={28} />} 
+            title="Secure Access" 
+            desc="Enterprise-grade protection using stateless JWT and secure cookie handling."
           />
-          <FeatureHUD 
-            icon={<Radio size={32} />} 
-            title="Active Streaming" 
-            desc="Low-latency VOD processing for instant playback."
-            color="cyan"
+          <FeatureItem 
+            icon={<Zap size={28} />} 
+            title="Fast Delivery" 
+            desc="Cloudinary-powered asset optimization for instant loading across all devices."
           />
-          <FeatureHUD 
-            icon={<Box size={32} />} 
-            title="Asset Pipeline" 
-            desc="Automatic optimization for 4K video assets."
-            color="purple"
+          <FeatureItem 
+            icon={<Layers size={28} />} 
+            title="Global Analytics" 
+            desc="Real-time performance tracking for creators to monitor their audience growth."
           />
         </div>
 
-        {/* --- THE GOD CTA --- */}
-        <div className="relative py-32 rounded-[5rem] overflow-hidden group">
-          <div className="absolute inset-0 bg-indigo-600 group-hover:bg-indigo-500 transition-colors duration-700" />
-          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+        {/* --- CALL TO ACTION --- */}
+        <div className="relative py-24 rounded-[3.5rem] overflow-hidden group text-center border border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/10 to-transparent pointer-events-none" />
           
-          <div className="relative z-10 text-center px-6">
-            <h2 className="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-10 leading-none">
-              The Future <br /> Is <span className="text-black">ProjectX.</span>
+          <div className="relative z-10">
+            <h2 className="text-4xl md:text-6xl font-semibold text-white mb-10 tracking-tight">
+              Experience the <span className="text-slate-500">Difference.</span>
             </h2>
             <Link 
               to="/register" 
-              className="inline-flex items-center gap-4 bg-black text-white px-12 py-6 rounded-3xl font-black uppercase text-xs tracking-[0.5em] hover:bg-white hover:text-black transition-all duration-500 shadow-2xl"
+              className="inline-flex items-center gap-3 bg-white text-black px-10 py-4 rounded-2xl font-semibold hover:bg-slate-200 transition-all shadow-xl"
             >
-              Enter the Studio <ArrowRight size={20} />
+              Get Started <ArrowRight size={20} />
             </Link>
           </div>
         </div>
@@ -132,23 +121,21 @@ const About = () => {
   );
 };
 
-/* --- ARTISTIC HELPERS --- */
+/* --- SUB-COMPONENTS --- */
 
-const TechLabel = ({ label }) => (
-  <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,1)]" />
-    <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{label}</span>
-  </div>
+const TechBadge = ({ label }) => (
+  <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+    {label}
+  </span>
 );
 
-const FeatureHUD = ({ icon, title, desc, color }) => (
-  <div className="group flex flex-col items-center text-center">
-    <div className={`w-24 h-24 rounded-[2.5rem] bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:border-${color}-500/50 transition-all duration-700 relative`}>
-      <div className={`absolute inset-0 bg-${color}-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity`} />
-      <div className={`text-${color}-400 relative z-10`}>{icon}</div>
+const FeatureItem = ({ icon, title, desc }) => (
+  <div className="flex flex-col items-center md:items-start text-center md:text-left">
+    <div className="text-indigo-500 mb-6">
+      {icon}
     </div>
-    <h4 className="text-xl font-black uppercase italic tracking-tighter mb-4">{title}</h4>
-    <p className="text-slate-500 font-medium leading-relaxed">{desc}</p>
+    <h4 className="text-xl font-semibold text-white mb-3">{title}</h4>
+    <p className="text-slate-500 font-light leading-relaxed">{desc}</p>
   </div>
 );
 

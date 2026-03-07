@@ -2,180 +2,149 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { 
   Play, 
-  TrendingUp, 
-  Users, 
   Search, 
   ChevronRight,
   MonitorPlay,
   Zap,
   Globe,
-  Radio,
-  ArrowRight
+  ArrowRight,
+  LayoutGrid,
+  Tv
 } from "lucide-react";
 
 const Home = () => {
-  const { user, isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-indigo-500 relative overflow-hidden">
+    <div className="min-h-screen bg-[#030303] text-slate-200 selection:bg-indigo-500/30 overflow-hidden">
       
-      {/* --- GOD-LEVEL BACKGROUND ENGINE --- */}
-      {/* 1. The Grain Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-50 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      
-      {/* 2. Kinetic Mesh Gradients */}
-      <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15)_0%,_transparent_65%)] blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.1)_0%,_transparent_65%)] blur-[120px]" />
-      
-      {/* 3. Floating Geometric Accents */}
-      <div className="absolute top-[20%] right-[10%] w-[1px] h-64 bg-gradient-to-b from-transparent via-indigo-500/50 to-transparent" />
-      <div className="absolute top-1/2 left-0 w-32 h-[1px] bg-gradient-to-r from-indigo-500/50 to-transparent" />
+      {/* --- AMBIENT BACKGROUND --- */}
+      <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-5%] w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-[0.1] pointer-events-none" />
 
-      <div className="max-w-[1600px] mx-auto px-6 pt-32 pb-24 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 pt-32 pb-24 relative z-10">
         
-        {/* --- HERO SECTION: THE SINGULARITY --- */}
-        <div className="relative mb-48">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-indigo-400 text-[10px] font-black tracking-[0.5em] uppercase mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            <Radio size={14} className="animate-pulse" /> Transmission V2.0 Active
+        {/* --- HERO SECTION --- */}
+        <div className="text-center mb-32 max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-indigo-400 text-xs font-semibold mb-8">
+            <Tv size={14} /> New: Ultra-HD Streaming is here
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-8">
-              <h1 className="text-[12vw] lg:text-[10rem] font-black italic tracking-tighter uppercase leading-[0.75] mb-12 mix-blend-difference">
-                <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20">The Power</span>
-                <span className="block text-indigo-500 relative">
-                    of Flow.
-                    <Zap className="absolute -right-20 top-0 text-cyan-400 hidden lg:block animate-bounce-slow" size={80} />
-                </span>
-              </h1>
+          <h1 className="text-6xl md:text-8xl font-light tracking-tight text-white mb-8 leading-[1.1]">
+            Your favorite stories, <br />
+            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-300 to-slate-400">
+                beautifully delivered.
+            </span>
+          </h1>
 
-              <p className="text-xl md:text-3xl font-light text-slate-400 max-w-2xl leading-relaxed mb-12 tracking-tight">
-                Beyond streaming. We've engineered a <span className="text-white font-bold italic">Neural Video Engine</span> for the next generation of digital architects.
-              </p>
+          <p className="text-lg md:text-xl text-slate-400 leading-relaxed mb-12 max-w-2xl mx-auto font-light">
+            Stream high-quality videos, follow your favorite creators, and manage your own studio—all in one place.
+          </p>
 
-              <div className="flex flex-wrap gap-6 items-center">
-                <Link
-                  to="/explore"
-                  className="group relative px-10 py-5 bg-white text-black font-black uppercase text-xs tracking-[0.3em] rounded-2xl overflow-hidden transition-all duration-500 hover:bg-indigo-600 hover:text-white"
-                >
-                  <span className="relative z-10 flex items-center gap-3">
-                    Explore Nexus <ChevronRight size={18} className="group-hover:translate-x-2 transition-transform" />
-                  </span>
-                </Link>
-                
-                <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
-                    <div className="relative flex items-center bg-white/5 border border-white/10 rounded-2xl px-6 py-5 backdrop-blur-md">
-                        <Search className="text-slate-500 mr-4" size={20} />
-                        <input 
-                            type="text" 
-                            placeholder="Find Transmissions..." 
-                            className="bg-transparent border-none outline-none text-sm font-bold w-64 placeholder:text-slate-700"
-                        />
-                    </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Cinematic HUD Preview */}
-            <div className="lg:col-span-4 hidden lg:block">
-              <div className="relative aspect-[3/4] rounded-[4rem] overflow-hidden border border-white/10 group">
-                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/40 to-transparent z-10" />
-                 <img 
-                    src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000" 
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    alt="Abstract Art"
-                 />
-                 <div className="absolute bottom-10 left-10 z-20">
-                    <p className="text-[10px] font-black tracking-[0.5em] text-cyan-400 mb-2 uppercase">Featured Origin</p>
-                    <h2 className="text-3xl font-black italic uppercase leading-none">Cyberpunk <br /> Synthesis</h2>
-                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* --- PERFORMANCE STATS: OS STYLE --- */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-48">
-          <StatHUD icon={<MonitorPlay size={20} />} value="4K" label="Resolution" />
-          <StatHUD icon={<Globe size={20} />} value="CDN" label="Global Edge" />
-          <StatHUD icon={<TrendingUp size={20} />} value="LIVE" label="Real-time" />
-          <StatHUD icon={<Zap size={20} />} value="0ms" label="Latency" />
-        </div>
-
-        {/* --- DYNAMIC CONTENT GRID --- */}
-        <div className="space-y-16 relative">
-          <div className="flex items-end justify-between border-b border-white/5 pb-8">
-            <div>
-              <p className="text-indigo-500 text-[10px] font-black tracking-[0.5em] uppercase mb-2">Algorithm Pick</p>
-              <h2 className="text-5xl font-black italic uppercase tracking-tighter">Hyper <span className="text-slate-500">Trends</span></h2>
-            </div>
-            <Link to="/explore" className="group flex items-center gap-2 text-xs font-black tracking-widest uppercase text-slate-400 hover:text-white transition-colors">
-              Enter the Nexus <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            {/* Primary Action */}
+            <Link
+              to="/explore"
+              className="group relative px-10 py-4 overflow-hidden rounded-2xl"
+            >
+              <div className="absolute inset-0 bg-indigo-600 transition-transform group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 to-transparent" />
+              <span className="relative flex items-center gap-2 text-white font-semibold tracking-wide">
+                Watch Now <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </span>
             </Link>
+            
+            {/* Simple Search */}
+            <div className="relative group w-full sm:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={18} />
+                <input 
+                    type="text" 
+                    placeholder="Search videos..." 
+                    className="w-full bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-indigo-500/30 focus:ring-1 focus:ring-indigo-500/20 transition-all text-sm"
+                />
+            </div>
           </div>
+        </div>
+
+        {/* --- FEATURE BAR: SIMPLE TERMS --- */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-2 bg-white/[0.02] border border-white/5 rounded-[2.5rem] mb-32 backdrop-blur-sm">
+          <StatFlux icon={<MonitorPlay size={20} />} label="4K Quality" />
+          <StatFlux icon={<Globe size={20} />} label="Watch Anywhere" />
+          <StatFlux icon={<LayoutGrid size={20} />} label="Creator Studio" />
+          <StatFlux icon={<Zap size={20} />} label="Fast Loading" />
+        </div>
+
+        {/* --- SECTION HEADER --- */}
+        <div className="flex items-end justify-between mb-12 px-2">
+          <div>
+            <h2 className="text-4xl font-semibold text-white tracking-tight">Trending <span className="text-slate-600 font-light">Videos</span></h2>
+          </div>
+          <Link to="/explore" className="group text-sm font-medium text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
+            See all <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            <VideoNexusCard 
-                thumbnail="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000" 
-                title="The Architecture of Tomorrow" 
-                creator="Studio_X" 
-                views="2.4M" 
-            />
-            <VideoNexusCard 
-                thumbnail="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000" 
-                title="Reactive Engine Patterns" 
-                creator="Dev_Core" 
-                views="892K" 
-            />
-            <VideoNexusCard 
-                thumbnail="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" 
-                title="Synthwave Visualizer Pro" 
-                creator="Lumina" 
-                views="1.1M" 
-            />
-          </div>
+        {/* --- VIDEO GRID --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <FluxVideoCard 
+              thumbnail="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000" 
+              title="Modern Interior Design" 
+              creator="Design Studio" 
+              views="1.2M" 
+          />
+          <FluxVideoCard 
+              thumbnail="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1000" 
+              title="Coding for Beginners" 
+              creator="Tech Academy" 
+              views="850K" 
+          />
+          <FluxVideoCard 
+              thumbnail="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=1000" 
+              title="Relaxing Lo-Fi Beats" 
+              creator="Lumina Music" 
+              views="2.4M" 
+          />
         </div>
       </div>
     </div>
   );
 };
 
-/* --- ARTISTIC SUB-COMPONENTS --- */
+/* --- SUB-COMPONENTS --- */
 
-const StatHUD = ({ icon, value, label }) => (
-  <div className="group relative p-8 bg-white/[0.02] border border-white/5 rounded-[2.5rem] hover:bg-white/[0.05] transition-all duration-500">
-    <div className="absolute top-4 right-4 text-indigo-500/30 group-hover:text-indigo-500 transition-colors">
+const StatFlux = ({ icon, label }) => (
+  <div className="flex flex-col items-center justify-center py-8 rounded-[2rem] hover:bg-white/5 transition-colors group">
+    <div className="text-slate-500 group-hover:text-indigo-400 transition-colors mb-3">
         {icon}
     </div>
-    <p className="text-4xl font-black italic tracking-tighter mb-1">{value}</p>
-    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">{label}</p>
+    <span className="text-xs font-medium text-slate-500">{label}</span>
   </div>
 );
 
-const VideoNexusCard = ({ thumbnail, title, creator, views }) => (
+const FluxVideoCard = ({ thumbnail, title, creator, views }) => (
   <div className="group cursor-pointer">
-    <div className="relative aspect-video rounded-[2.5rem] overflow-hidden mb-6 border border-white/5 bg-[#161616] transition-all duration-700 group-hover:border-indigo-500/50 group-hover:-translate-y-3">
-      <img src={thumbnail} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+    <div className="relative aspect-video rounded-[2rem] overflow-hidden mb-6 border border-white/5 bg-white/[0.02] transition-all duration-500 group-hover:border-indigo-500/30 group-hover:-translate-y-2">
+      <img 
+        src={thumbnail} 
+        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
+        alt={title}
+      />
       
-      {/* HUD OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-8 flex flex-col justify-end">
-        <div className="flex items-center gap-4 text-white">
-            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                <Play size={20} fill="white" />
-            </div>
-            <span className="text-[10px] font-black tracking-widest uppercase">Stream Now</span>
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="w-14 h-14 rounded-full bg-indigo-600/90 backdrop-blur-md flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform">
+            <Play size={24} fill="white" className="text-white ml-1" />
         </div>
       </div>
     </div>
     
-    <div className="px-4">
-        <h3 className="font-black italic text-xl uppercase tracking-tighter mb-2 leading-tight group-hover:text-indigo-400 transition-colors">
+    <div className="px-2 space-y-1">
+        <h3 className="text-xl font-semibold text-white group-hover:text-indigo-400 transition-colors line-clamp-1 tracking-tight">
             {title}
         </h3>
-        <div className="flex items-center justify-between">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">{creator}</p>
-            <p className="text-[10px] font-mono font-bold text-indigo-500/60">{views} TRANSMISSIONS</p>
+        <div className="flex items-center justify-between text-sm">
+            <span className="text-slate-500">{creator}</span>
+            <span className="text-slate-600 font-medium">{views} views</span>
         </div>
     </div>
   </div>

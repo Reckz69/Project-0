@@ -107,6 +107,10 @@ const VideoCard = ({ video, onClick }) => {
         <h3 className="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-1">
           {video.title}
         </h3>
+
+        <p className="text-lg font-medium  text-white group-hover:text-indigo-400 transition-colors line-clamp-1">
+          {video.owner?.username}
+        </p>
         
         <div className="flex items-center gap-6 mt-6 text-[11px] font-bold uppercase tracking-widest text-slate-500">
           <div className="flex items-center gap-2">

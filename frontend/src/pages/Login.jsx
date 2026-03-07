@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../api/auth.js";
 import { useAuth } from "../context/AuthContext";
-import { Lock, Mail, Loader2, ArrowRight, Sparkles, ShieldCheck, Fingerprint } from "lucide-react";
+import { Lock, Mail, Loader2, ChevronRight, Fingerprint, Shield } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -19,130 +19,117 @@ const Login = () => {
     try {
       const res = await loginUser({ email, password });
       const userData = res.data?.data?.user || res.data?.data;
-      
       login(userData);
-      toast.success(`Access Granted: Welcome ${userData.username}`);
+      toast.success(`Welcome back, ${userData.username}`);
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Authentication Failed.");
+      toast.error("Authentication failed. Please check your credentials.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] px-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-[#030303] px-4 relative font-sans overflow-hidden">
       
-      {/* --- GOD-LEVEL BACKGROUND ENGINE --- */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-      
-      {/* Animated Orbs */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[radial-gradient(circle_at_center,_rgba(99,102,241,0.15)_0%,_transparent_70%)] blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.1)_0%,_transparent_70%)] blur-[120px]" />
-      
-      {/* Structural Accents */}
-      <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent" />
-      <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+      {/* --- ARTISTIC AMBIANCE (The "Cosmic" background) --- */}
+      <div className="absolute top-[10%] left-[15%] w-[400px] h-[400px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[10%] right-[10%] w-[350px] h-[350px] bg-cyan-500/10 rounded-full blur-[100px]" />
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none" />
 
-      <div className="w-full max-w-[480px] z-10 relative">
+      <div className="w-full max-w-[460px] z-10">
         
-        {/* --- BRANDING HUD --- */}
-        <div className="flex flex-col items-center mb-12 group">
+        {/* --- THE NEW ARTISTIC LOGO --- */}
+        <div className="flex flex-col items-center mb-12">
           <div className="relative mb-6">
-            <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-2xl group-hover:bg-indigo-500/40 transition-all duration-700" />
-            <div className="relative w-20 h-20 bg-white text-black rounded-3xl flex items-center justify-center rotate-3 group-hover:rotate-[15deg] transition-transform duration-500 shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-               <span className="font-black text-4xl italic tracking-tighter">X</span>
+            {/* The "Prism" Logo Effect */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-2xl rotate-12 blur-lg opacity-40 animate-pulse" />
+            <div className="relative w-16 h-16 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center shadow-2xl">
+              <Fingerprint className="text-white w-8 h-8" strokeWidth={1.5} />
             </div>
           </div>
-          <h1 className="text-5xl font-black italic tracking-tighter uppercase text-white leading-none">
-            Project<span className="text-indigo-500">X</span> <span className="text-slate-700">Auth</span>
+          <h1 className="text-4xl font-light tracking-tight text-white flex items-center gap-1">
+            Project <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">X</span>
           </h1>
-          <div className="mt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
-             <Fingerprint size={12} className="text-indigo-400" /> Biometric Identity Link Active
-          </div>
+          <p className="text-slate-500 text-xs tracking-[0.2em] uppercase mt-2 font-medium">Secure Biometric Access</p>
         </div>
 
-        {/* --- LOGIN NEXUS CARD --- */}
-        <div className="relative group/card">
-          {/* Outer Glow Edge */}
-          <div className="absolute -inset-[1px] bg-gradient-to-b from-white/20 to-transparent rounded-[3rem] opacity-50" />
+        {/* --- GLASSMORPHIC CARD --- */}
+        <div className="relative group">
+          {/* Subtle Outer Border Glow */}
+          <div className="absolute -inset-[1px] bg-gradient-to-b from-white/20 to-transparent rounded-[2.5rem] pointer-events-none" />
           
-          <div className="relative bg-[#0A0A0A]/80 backdrop-blur-3xl rounded-[3rem] p-10 md:p-12 border border-white/5 overflow-hidden">
-            {/* Inner Decorative Mesh */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
-
-            <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-              
-              {/* Input: Email */}
-              <div className="space-y-3">
-                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 ml-1">Universal ID</label>
+          <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)]">
+            
+            <form onSubmit={handleSubmit} className="space-y-7">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center px-1">
+                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Email Address</label>
+                </div>
                 <div className="relative group/input">
-                  <Mail className="absolute left-5 top-4.5 text-slate-600 group-focus-within/input:text-indigo-400 transition-colors" size={18} />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within/input:text-indigo-400 transition-colors" size={18} />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="CREATOR@PROJECTX.COM"
-                    className="w-full pl-14 pr-6 py-5 bg-white/[0.03] border border-white/5 rounded-2xl focus:outline-none focus:border-indigo-500/50 text-sm font-bold uppercase tracking-widest text-white placeholder:text-slate-800 transition-all"
+                    placeholder="name@example.com"
+                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/5 rounded-2xl focus:outline-none focus:border-indigo-500/30 focus:bg-white/[0.07] text-slate-200 placeholder:text-slate-600 transition-all text-sm"
                     required
                   />
                 </div>
               </div>
 
-              {/* Input: Password */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center ml-1">
-                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Access Key</label>
-                  <Link to="/forgot" className="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-white transition-colors">Recover</Link>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center px-1">
+                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Password</label>
+                  <Link to="/forgot" className="text-[11px] font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Forgot Access?</Link>
                 </div>
                 <div className="relative group/input">
-                  <Lock className="absolute left-5 top-4.5 text-slate-600 group-focus-within/input:text-indigo-400 transition-colors" size={18} />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within/input:text-indigo-400 transition-colors" size={18} />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-14 pr-6 py-5 bg-white/[0.03] border border-white/5 rounded-2xl focus:outline-none focus:border-indigo-500/50 text-white transition-all"
+                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/5 rounded-2xl focus:outline-none focus:border-indigo-500/30 focus:bg-white/[0.07] text-slate-200 transition-all text-sm"
                     required
                   />
                 </div>
               </div>
 
-              {/* Submit Button */}
+              {/* ACTION BUTTON */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="relative w-full group/btn overflow-hidden"
+                className="w-full group relative"
               >
-                <div className="absolute inset-0 bg-indigo-600 translate-y-[100%] group-hover/btn:translate-y-0 transition-transform duration-500" />
-                <div className="relative w-full py-5 bg-white text-black group-hover/btn:text-white font-black uppercase text-xs tracking-[0.4em] rounded-2xl transition-colors duration-500 flex items-center justify-center gap-3">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-2xl blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
+                <div className="relative w-full py-4 bg-indigo-600 text-white font-semibold rounded-2xl hover:bg-indigo-500 transition-all flex items-center justify-center gap-2 overflow-hidden">
                   {isSubmitting ? (
                     <Loader2 className="animate-spin" size={20} />
                   ) : (
                     <>
-                      Verify Identity
-                      <ArrowRight size={18} className="group-hover/btn:translate-x-2 transition-transform" />
+                      <span>Sign in to Flux</span>
+                      <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </div>
               </button>
             </form>
 
-            {/* Footer Logic */}
-            <div className="mt-12 flex flex-col items-center gap-6">
-               <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
-                  New Transmissions? <Link to="/register" className="text-white hover:text-indigo-400 underline decoration-indigo-500 underline-offset-4">Register Station</Link>
+            <div className="mt-10 text-center">
+               <p className="text-xs text-slate-500">
+                  New to ProjectX? <Link to="/register" className="text-white font-semibold hover:text-indigo-400 transition-colors ml-1">Create an account</Link>
                </p>
             </div>
           </div>
         </div>
 
-        {/* Security Badge */}
-        <div className="mt-10 flex flex-col items-center gap-4 opacity-40">
-           <div className="flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full">
-              <ShieldCheck size={14} className="text-indigo-400" />
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Quantum-Encrypted Session</span>
+        {/* --- FOOTER BADGE --- */}
+        <div className="mt-10 flex flex-col items-center gap-3 opacity-30 group hover:opacity-60 transition-opacity duration-500">
+           <div className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-full">
+              <Shield size={12} className="text-cyan-400" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">Quantum-level data encryption</span>
            </div>
         </div>
       </div>

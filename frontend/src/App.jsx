@@ -12,6 +12,7 @@ import Explore from "./pages/Explore";
 import UploadVideo from "./pages/UploadVideo";
 import MyVideos from "./pages/MyVideo";
 import WatchVideo from "./pages/WatchVideo";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -62,6 +63,12 @@ function App() {
               }
             />
           </Route>
+
+          
+        {/* Your other routes */}
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/video/:videoId" element={<WatchVideo />} />
+      
         </Routes>
       </BrowserRouter>
     </AuthProvider>

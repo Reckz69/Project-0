@@ -6,13 +6,17 @@ import {
     updateVideo,
     deleteVideo,
     togglePublishedStatus,
-    getVideoViews
+    getVideoViews,
+    searchVideos
  } from "../controllers/videos.controllers.js";
 
  import { verifyJWT } from "../middlewares/auth.middleware.js";
  import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
+
+router.get("/search", searchVideos);
+
 router.use(verifyJWT);
 
 // GET all videos, CREATE video
@@ -26,6 +30,9 @@ router
     ]),
     publishVideo
   );
+
+
+
 
 // specific routes FIRST
 router.patch("/views/:videoId", getVideoViews);

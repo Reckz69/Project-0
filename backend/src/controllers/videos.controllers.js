@@ -6,6 +6,7 @@ import { User } from "../models/user.models.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { deleteImageFromCloudinary, uploadToCloudinary } from "../utils/cloudinary.js";
 
+
 const getAllVideos = asyncHandler(async (req, res) => {
     const {
       page = 1,
@@ -142,53 +143,58 @@ const publishVideo = asyncHandler(async(req, res) => {
 });
 
 const getVideoById = asyncHandler(async(req, res) => {
-    const {videoId} = req.params
+    const { videoId } = req.params;
 
-    if(!videoId?.trim()){
-        throw new ApiError(401,"Video Id is required" )
-    }
-
-    if(!isValidObjectId(videoId)){
-        throw new ApiError(400, "Invalid videoId")
+    if (!isValidObjectId(videoId)) {
+        throw new ApiError(400, "Invalid videoId");
     }
     
     const video = await Video.aggregate([
         {
             $match: {
-            _id: new mongoose.Types.ObjectId(videoId),
+                _id: new mongoose.Types.ObjectId(videoId),
             },
         },
         {
-            $lookup:{
+            $lookup: {
                 from: "users",
                 localField: "owner",
                 foreignField: "_id",
-                as:"owner"
+                as: "owner",
+                pipeline: [
+                    {
+                        $project: {
+                            username: 1,
+                            fullName: 1,
+                            avatar: 1,
+                        }
+                    }
+                ]
             },
         },
         {
-            $addFields:{
-                owner:{
-                    $first:"$owner",
-                },
+            $addFields: {
+                owner: { $first: "$owner" },
             },
-        },
-        {
-            $project:{
-                "owner.refreshToken": 0,
-                "owner.password" : 0
-            },
-        },
-    ])
+        }
+    ]);
 
-    if(!video){
-        throw new ApiError(401, "Enter Valid Id")
+    // FIX 1: Check if the array has content
+    if (!video?.length) {
+        throw new ApiError(404, "Video not found");
+    }
+
+    const videoData = video[0];
+
+    // FIX 2: Privacy Check
+    // If video is private AND the current user is NOT the owner, block access
+    if (!videoData.isPublished && videoData.owner?._id.toString() !== req.user?._id.toString()) {
+        throw new ApiError(403, "This video is private");
     }
 
     return res
         .status(200)
-        .json(new ApiResponse(200, video[0], "Video retrieved successfully"));
-
+        .json(new ApiResponse(200, videoData, "Video retrieved successfully"));
 });
 
 const updateVideo = asyncHandler(async(req, res) => {
@@ -313,39 +319,38 @@ const deleteVideo = asyncHandler(async(req, res) => {
 const getVideoViews = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     const userId = req.user?._id;
-  
-    if (!videoId || !isValidObjectId(videoId)) {
-      throw new ApiError(400, "Invalid videoId");
+
+    if (!isValidObjectId(videoId)) {
+        throw new ApiError(400, "Invalid videoId");
     }
-  
-    if (!userId) {
-      throw new ApiError(401, "Unauthorized");
-    }
-  
-    const video = await Video.findById(videoId);
-  
-    if (!video) {
-      throw new ApiError(404, "Video not found");
-    }
-  
-    // ✅ Check if user already viewed
-    const alreadyViewed = video.viewedBy.includes(userId);
-  
-    if (!alreadyViewed) {
-      video.views += 1;
-      video.viewedBy.push(userId);
-      await video.save();
-    }
-  
-    return res.status(200).json(
-      new ApiResponse(
-        200,
-        { views: video.views, alreadyViewed },
-        "View count processed"
-      )
+
+    // Atomic Update: Only increment if userId is NOT in the viewedBy array
+    const video = await Video.findOneAndUpdate(
+        {
+            _id: videoId,
+            viewedBy: { $ne: userId } // $ne = "Not Equal"
+        },
+        {
+            $inc: { views: 1 },
+            $push: { viewedBy: userId }
+        },
+        { new: true }
     );
-  });
-  
+
+    // If 'video' is null, it means the user already viewed it or video doesn't exist
+    if (!video) {
+        const currentVideo = await Video.findById(videoId).select("views");
+        if (!currentVideo) throw new ApiError(404, "Video not found");
+        
+        return res.status(200).json(
+            new ApiResponse(200, { views: currentVideo.views, alreadyViewed: true }, "Already viewed")
+        );
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, { views: video.views, alreadyViewed: false }, "View count updated")
+    );
+});
 
 const togglePublishedStatus = asyncHandler(async(req, res) => {
     const {videoId} = req.params;
@@ -383,6 +388,68 @@ const togglePublishedStatus = asyncHandler(async(req, res) => {
 })
 
 
+
+// Rename this to searchVideos to match your router import
+const searchVideos = asyncHandler(async (req, res) => {
+    const { query } = req.query;
+
+    if (!query) {
+        return res.status(200).json(new ApiResponse(200, [], "No query provided"));
+    }
+    
+    const results = await Video.aggregate([
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "ownerDetails",
+                pipeline: [
+                    { $project: { username: 1, fullName: 1, avatar: 1 } }
+                ]
+            }
+        },
+        { $addFields: { owner: { $first: "$ownerDetails" } } },
+        {
+            $match: {
+                $or: [
+                    { title: { $regex: query, $options: "i" } },
+                    { "owner.username": { $regex: query, $options: "i" } },
+                    { "owner.fullName": { $regex: query, $options: "i" } }
+                ],
+                isPublished: true
+            }
+        },
+        {
+            $project: {
+                title: 1,
+                thumbnail: 1,
+                views: 1,
+                duration: 1, // Added duration for your SearchPage UI
+                "owner.username": 1,
+                "owner.fullName": 1,
+                "owner.avatar": 1,
+                isOwnerMatch: {
+                    $cond: [
+                        { $regexMatch: { input: "$owner.username", regex: query, options: "i" } },
+                        true,
+                        false
+                    ]
+                }
+            }
+        },
+        { $limit: 15 }
+    ]);
+
+    // For Search, returning an empty array is a success, not a 404 error
+    return res
+        .status(200)
+        .json(new ApiResponse(200, results, "Results retrieved successfully"));
+});
+
+
+
+
 export{
     getAllVideos,
     publishVideo,
@@ -391,4 +458,5 @@ export{
     deleteVideo,
     togglePublishedStatus,
     getVideoViews,
+    searchVideos,
 }

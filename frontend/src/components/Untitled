@@ -1,9 +1,0 @@
-const ErrorFallback = () => (
-  <div className="h-screen flex items-center justify-center">
-    <p className="text-red-600 text-lg">
-      Something went wrong. Please try again.
-    </p>
-  </div>
-);
-
-export default ErrorFallback;
